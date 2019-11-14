@@ -42,34 +42,41 @@ class MatcherTest < Minitest::Test
     end
 
     def test_match_tutor_type
-        set_match
-        a_match = @match[0]
-        assert_equal(true, a_match.class == Hash)
+        get_one_match
+        assert_equal(true, @a_match.class == Hash)
     end
 
     def test_match_tutor_key
-        set_match
-        a_match = @match[0]
-        assert_equal(true, a_match.key?("tutor"))
+        get_one_match
+        assert_equal(true, @a_match.key?("tutor"))
     end
 
     def test_match_tutor_key_is_hash
-        set_match
-        a_match = @match[0]
-        a_match_value = a_match["tutor"]
+        get_one_match
+        a_match_value = @a_match["tutor"]
         assert_equal(true, a_match_value.class == Hash)
     end
 
     def test_match_tutor_subjects_is_array
-        set_match
-        a_match = @match[0]
-        a_match_value = a_match["subjects_matched"]
+        get_one_match
+        a_match_value = @a_match["subjects_matched"]
         assert_equal(true, a_match_value.class == Array)
     end
 
     ##########
 
     ##match_competency test cases
+    def test_competency_match
+        get_one_match
+        a_match_value = @a_match["competency_match"]
+        assert_equal(true, a_match_value.class == Array)
+    end
+
+    def test_competency_match_length
+        get_one_match
+        a_match_value = @a_match["competency_match"]
+        assert_equal(true, a_match_value.length > 0)
+    end
     
 
     private 
@@ -86,6 +93,12 @@ class MatcherTest < Minitest::Test
         @tutors = set_tutors
         @match = Matcher.matchTutor(@student, @tutors)
         return @match
+    end
+
+    def get_one_match
+        set_match
+        @a_match = @match[0]
+        return @a_match
     end
 
     def set_match
