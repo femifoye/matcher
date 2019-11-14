@@ -4,8 +4,7 @@ require 'TestCases'
 require 'MockDb'
 
 class MatcherTest < Minitest::Test
-    
-    
+     
     #@profile = @student.student()
 
 
@@ -36,11 +35,42 @@ class MatcherTest < Minitest::Test
         assert_equal(true, TestCases.tutor_subjects())
     end
 
+    ## match_tutor test cases
     def test_match_tutor
-        @student = set_student
-        @tutors = set_tutors
-        assert_equal(true, Matcher.matchTutor(@student, @tutors).length > 0)
+        set_match
+        assert_equal(true, @match.length > 0)
     end
+
+    def test_match_tutor_type
+        set_match
+        a_match = @match[0]
+        assert_equal(true, a_match.class == Hash)
+    end
+
+    def test_match_tutor_key
+        set_match
+        a_match = @match[0]
+        assert_equal(true, a_match.key?("tutor"))
+    end
+
+    def test_match_tutor_key_is_hash
+        set_match
+        a_match = @match[0]
+        a_match_value = a_match["tutor"]
+        assert_equal(true, a_match_value.class == Hash)
+    end
+
+    def test_match_tutor_subjects_is_array
+        set_match
+        a_match = @match[0]
+        a_match_value = a_match["subjects_matched"]
+        assert_equal(true, a_match_value.class == Array)
+    end
+
+    ##########
+
+    ##match_competency test cases
+    
 
     private 
     def set_student
@@ -49,6 +79,17 @@ class MatcherTest < Minitest::Test
 
     def set_tutors
         @tutors = MockDb.tutors()
+    end
+
+    def get_match
+        @student = set_student
+        @tutors = set_tutors
+        @match = Matcher.matchTutor(@student, @tutors)
+        return @match
+    end
+
+    def set_match
+        @match = get_match
     end
 
 
